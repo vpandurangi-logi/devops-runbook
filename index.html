@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centralized Runbook</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-book"></i> Centralized Runbook</h1>
+            <p>Maintain and search through your operational procedures and documentation</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Add New Entry Section -->
+            <section class="add-entry-section">
+                <h2><i class="fas fa-plus-circle"></i> Add New Entry</h2>
+                <form id="entryForm" class="entry-form">
+                    <div class="form-group">
+                        <label for="title">Title *</label>
+                        <input type="text" id="title" name="title" required placeholder="Enter a descriptive title">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category *</label>
+                        <select id="category" name="category" required>
+                            <option value="">Select a category</option>
+                            <option value="troubleshooting">Troubleshooting</option>
+                            <option value="deployment">Deployment</option>
+                            <option value="maintenance">Maintenance</option>
+                            <option value="configuration">Configuration</option>
+                            <option value="monitoring">Monitoring</option>
+                            <option value="security">Security</option>
+                            <option value="backup">Backup & Recovery</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="component">Component</label>
+                        <select id="component" name="component">
+                            <option value="gitlab">GitLab</option>
+                            <option value="jenkins">Jenkins</option>
+                            <option value="artifactory">Artifactory</option>
+                            <option value="aws">AWS</option>
+                            <option value="runner-config">Runner Config</option>
+                            <option value="grafana">Grafana</option>
+                            <option value="open-search">Open-Search</option>
+                            <option value="zabbix">Zabbix</option>
+                            <option value="alibaba">Alibaba</option>
+                            <option value="jira">Jira</option>
+                            <option value="confluence">Confluence</option>
+                            <option value="sentry">Sentry</option>
+                            <option value="others" selected>Others</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tags">Tags</label>
+                        <input type="text" id="tags" name="tags" placeholder="Enter tags separated by commas (e.g., server, database, linux)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description/Procedure *</label>
+                        <textarea id="description" name="description" required rows="8" placeholder="Describe the procedure, steps, or solution in detail..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Additional Notes</label>
+                        <textarea id="notes" name="notes" rows="4" placeholder="Any additional notes, warnings, or related information..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Entry
+                        </button>
+                        <button type="button" id="clearForm" class="btn btn-secondary">
+                            <i class="fas fa-eraser"></i> Clear Form
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Search and Browse Section -->
+            <section class="search-section">
+                <h2><i class="fas fa-search"></i> Search & Browse Entries</h2>
+                
+                <div class="search-controls">
+                    <div class="search-bar">
+                        <input type="text" id="searchInput" placeholder="Search by title, description, tags, or notes...">
+                        <button id="searchBtn" class="btn btn-search">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+
+                    <div class="filter-controls">
+                        <select id="categoryFilter">
+                            <option value="">All Categories</option>
+                            <option value="troubleshooting">Troubleshooting</option>
+                            <option value="deployment">Deployment</option>
+                            <option value="maintenance">Maintenance</option>
+                            <option value="configuration">Configuration</option>
+                            <option value="monitoring">Monitoring</option>
+                            <option value="security">Security</option>
+                            <option value="backup">Backup & Recovery</option>
+                            <option value="other">Other</option>
+                        </select>
+
+                        <select id="componentFilter">
+                            <option value="">All Components</option>
+                            <option value="gitlab">GitLab</option>
+                            <option value="jenkins">Jenkins</option>
+                            <option value="artifactory">Artifactory</option>
+                            <option value="aws">AWS</option>
+                            <option value="runner-config">Runner Config</option>
+                            <option value="grafana">Grafana</option>
+                            <option value="open-search">Open-Search</option>
+                            <option value="zabbix">Zabbix</option>
+                            <option value="alibaba">Alibaba</option>
+                            <option value="jira">Jira</option>
+                            <option value="confluence">Confluence</option>
+                            <option value="sentry">Sentry</option>
+                            <option value="others">Others</option>
+                        </select>
+
+                        <button id="clearFilters" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Clear Filters
+                        </button>
+                    </div>
+                </div>
+
+                <div class="results-info">
+                    <span id="resultsCount">0 entries found</span>
+                    <button id="exportBtn" class="btn btn-export">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                </div>
+
+                <div id="entriesList" class="entries-list">
+                    <!-- Entries will be displayed here -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Entry Detail Modal -->
+    <div id="entryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle"></h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="editEntryBtn" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button id="deleteEntryBtn" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
