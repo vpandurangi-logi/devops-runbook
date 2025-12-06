@@ -249,6 +249,7 @@ section h2 {
 
 .entry-category,
 .entry-component,
+.entry-author,
 .entry-date {
     display: flex;
     align-items: center;
@@ -257,6 +258,11 @@ section h2 {
 
 .entry-component {
     color: #3182ce;
+    font-weight: 500;
+}
+
+.entry-author {
+    color: #805ad5;
     font-weight: 500;
 }
 

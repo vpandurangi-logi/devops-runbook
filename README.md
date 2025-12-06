@@ -71,15 +71,15 @@ Fill out the form with the following information:
   - Security
   - Backup & Recovery
   - Other
-- **Priority**: Set the urgency level (Critical, High, Medium, Low)
+- **Author** (Required): Name of the person or team who created the entry
 - **Tags**: Add keywords separated by commas for better searchability
 - **Description/Procedure** (Required): Detailed steps or information
 - **Additional Notes**: Any extra information, warnings, or related details
 
 ### Searching and Filtering
-- **Text Search**: Enter keywords in the search box to find matching entries
+- **Text Search**: Enter keywords in the search box to find matching entries (searches title, description, notes, author, and tags)
 - **Category Filter**: Filter by specific categories
-- **Priority Filter**: Filter by priority levels
+- **Component Filter**: Filter by specific components
 - **Combined Filters**: Use multiple filters together for precise results
 
 ### Managing Entries
@@ -94,9 +94,9 @@ Here's an example of a well-structured runbook entry:
 
 **Title**: "Server Restart Procedure"
 **Category**: Maintenance
-**Priority**: High
+**Author**: DevOps Team
 **Tags**: server, restart, maintenance, downtime
-**Description**: 
+**Description**:
 ```
 1. Check current server load and active connections
 2. Notify users about planned maintenance

@@ -102,6 +102,7 @@ class RunbookApp {
             title: formData.get('title').trim(),
             category: formData.get('category'),
             component: formData.get('component'),
+            author: formData.get('author').trim(),
             tags: formData.get('tags').split(',').map(tag => tag.trim()).filter(tag => tag),
             description: formData.get('description').trim(),
             notes: formData.get('notes').trim(),
@@ -189,6 +190,10 @@ class RunbookApp {
                         <i class="fas fa-cog"></i>
                         ${this.capitalizeFirst(entry.component)}
                     </div>
+                    <div class="entry-author">
+                        <i class="fas fa-user"></i>
+                        ${this.escapeHtml(entry.author || 'Unknown')}
+                    </div>
                     <div class="entry-date">
                         <i class="fas fa-calendar"></i>
                         ${formattedDate}
@@ -226,6 +231,10 @@ class RunbookApp {
             <div class="detail-section">
                 <div class="detail-label">Component</div>
                 <div class="detail-content">${this.capitalizeFirst(entry.component)}</div>
+            </div>
+            <div class="detail-section">
+                <div class="detail-label">Author</div>
+                <div class="detail-content">${this.escapeHtml(entry.author || 'Unknown')}</div>
             </div>
             ${entry.tags.length > 0 ? `
                 <div class="detail-section">
@@ -275,6 +284,7 @@ class RunbookApp {
         document.getElementById('title').value = entry.title;
         document.getElementById('category').value = entry.category;
         document.getElementById('component').value = entry.component;
+        document.getElementById('author').value = entry.author || '';
         document.getElementById('tags').value = entry.tags.join(', ');
         document.getElementById('description').value = entry.description;
         document.getElementById('notes').value = entry.notes;
@@ -323,6 +333,7 @@ class RunbookApp {
                 return entry.title.toLowerCase().includes(searchTerm) ||
                        entry.description.toLowerCase().includes(searchTerm) ||
                        entry.notes.toLowerCase().includes(searchTerm) ||
+                       (entry.author && entry.author.toLowerCase().includes(searchTerm)) ||
                        entry.tags.some(tag => tag.toLowerCase().includes(searchTerm));
             });
         }
@@ -418,6 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 title: 'GitLab Runner Configuration',
                 category: 'configuration',
                 component: 'gitlab',
+                author: 'DevOps Team',
                 tags: ['gitlab', 'runner', 'ci-cd'],
                 description: `1. Install GitLab Runner on the target machine
 2. Register the runner with GitLab instance
@@ -434,6 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 title: 'Jenkins Pipeline Troubleshooting',
                 category: 'troubleshooting',
                 component: 'jenkins',
+                author: 'John Doe',
                 tags: ['jenkins', 'pipeline', 'troubleshooting'],
                 description: `1. Check Jenkins logs for error messages
 2. Verify pipeline syntax in Jenkinsfile
